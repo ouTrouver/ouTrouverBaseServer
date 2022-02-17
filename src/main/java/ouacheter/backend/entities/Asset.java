@@ -7,13 +7,22 @@ import javax.persistence.OneToOne;
 @Entity
 public class Asset {
     @Id
-    private Long id;
+    private int id;
     private String coordonates;
     private String name;
     @OneToOne
     private User owner;
+    private String description;
 
-    public void setId(Long id) {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -41,7 +50,7 @@ public class Asset {
         this.owner = owner;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 }
