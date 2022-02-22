@@ -9,11 +9,20 @@ import java.util.List;
 @Entity
 public class Shop {
     @Id
-    private Long id;
+    private int id;
     @OneToMany
     private List<Asset> assetsList;
     @OneToOne
     private User owner;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public User getOwner() {
         return owner;
@@ -31,12 +40,12 @@ public class Shop {
         this.assetsList = assetsList;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 }
