@@ -1,54 +1,48 @@
 package ouacheter.backend.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ouacheter.backend.entities.Asset;
 import ouacheter.backend.entities.Shop;
+import ouacheter.backend.entities.Shop;
 import ouacheter.backend.exceptions.ShopNotFoundException;
+import ouacheter.backend.exceptions.ShopNotFoundException;
+import ouacheter.backend.repositories.ShopRepository;
 import ouacheter.backend.repositories.ShopRepository;
 
 import java.util.List;
-
 @Service
 public class ShopService {
-
-    private ShopRepository repository;
-
+    private ouacheter.backend.repositories.ShopRepository ShopRepository;
+    @Autowired
     public ShopService(ShopRepository ShopRepository) {
-        this.repository = ShopRepository;
+        this.ShopRepository = ShopRepository;
     }
 
-
-
-    public List<Shop> all() {
-        return repository.findAll();
+    public Shop addShop(Shop Shop) {
+        return ShopRepository.save(Shop);
     }
 
-    public Shop newShop(Shop newShop) {
-        return repository.save(newShop);
+    public List<Shop> findAllShops() {
+        return ShopRepository.findAll();
     }
 
+    public Shop updateShop(Shop Shop) {
+        return ShopRepository.save(Shop);
+    }
 
-    public Shop one(int id) {
-
-        return repository.findById(id)
+    public Shop findShopById(int id) {
+        return ShopRepository.findById(id)
                 .orElseThrow(() -> new ShopNotFoundException(id));
     }
-    public Shop replaceDescription(Shop newDescription, int id) {
 
-        return repository.findById(id)
-                .map(Shop -> {
-                    Shop.setDescription(newDescription.getDescription());
-                    return repository.save(Shop);
-                })
-                .orElseGet(() -> {
-                    newDescription.setId(id);
-                    return repository.save(newDescription);
-                });
+    public void deleteShop(int id){
+        ShopRepository.deleteById(id);
     }
 
-    public void deleteShop(int id) {
-        repository.deleteById(id);
-    }
+
+
+
 
 
 }

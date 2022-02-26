@@ -1,57 +1,50 @@
 package ouacheter.backend.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ouacheter.backend.entities.Asset;
 import ouacheter.backend.entities.Asset;
 import ouacheter.backend.entities.Message;
+import ouacheter.backend.entities.Asset;
 import ouacheter.backend.exceptions.AssetNotFoundException;
+import ouacheter.backend.exceptions.AssetNotFoundException;
+import ouacheter.backend.repositories.AssetRepository;
 import ouacheter.backend.repositories.AssetRepository;
 import ouacheter.backend.repositories.AssetRepository;
 
 import java.util.List;
-
 @Service
 public class AssetService {
-
-    private AssetRepository repository;
-
+    private ouacheter.backend.repositories.AssetRepository AssetRepository;
+    @Autowired
     public AssetService(AssetRepository AssetRepository) {
-        this.repository = AssetRepository;
+        this.AssetRepository = AssetRepository;
     }
 
-
-
-    public List<Asset> all() {
-        return repository.findAll();
+    public Asset addAsset(Asset Asset) {
+        return AssetRepository.save(Asset);
     }
 
-    public Asset newAsset(Asset newAsset) {
-        return repository.save(newAsset);
+    public List<Asset> findAllAssets() {
+        return AssetRepository.findAll();
     }
 
+    public Asset updateAsset(Asset Asset) {
+        return AssetRepository.save(Asset);
+    }
 
-    public Asset one(int id) {
-
-        return repository.findById(id)
+    public Asset findAssetById(int id) {
+        return AssetRepository.findById(id)
                 .orElseThrow(() -> new AssetNotFoundException(id));
     }
 
-    public Asset replaceDescription(Asset newDescription, int id) {
-
-        return repository.findById(id)
-                .map(Asset -> {
-                    Asset.setDescription(newDescription.getDescription());
-                    return repository.save(Asset);
-                })
-                .orElseGet(() -> {
-                    newDescription.setId(id);
-                    return repository.save(newDescription);
-                });
+    public void deleteAsset(int id){
+        AssetRepository.deleteById(id);
     }
 
-    public void deleteAsset(int id) {
-        repository.deleteById(id);
-    }
+
+
+
 
 
 }

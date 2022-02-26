@@ -1,57 +1,47 @@
 package ouacheter.backend.services;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ouacheter.backend.entities.User;
 import ouacheter.backend.exceptions.UserNotFoundException;
 import ouacheter.backend.repositories.UserRepository;
 
+
 import java.util.List;
 
 @Service
 public class UserService {
-    private UserRepository repository;
-
-    public UserService(UserRepository userRepository) {
-        this.repository = userRepository;
+    private UserRepository UserRepository;
+    @Autowired
+    public UserService(UserRepository UserRepository) {
+        this.UserRepository = UserRepository;
     }
 
-
-
-    public List<User> all() {
-        return repository.findAll();
+    public User addUser(User User) {
+        return UserRepository.save(User);
     }
 
-    public User newUser(User newUser) {
-        return repository.save(newUser);
+    public List<User> findAllUsers() {
+        return UserRepository.findAll();
     }
 
+    public User updateUser(User User) {
+        return UserRepository.save(User);
+    }
 
-    public User one(int id) {
-
-        return repository.findById(id)
+    public User findUserById(int id) {
+        return UserRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
-
-    public User replaceUser( User newUser, int id) {
-
-        return repository.findById(id)
-                .map(user -> {
-                    user.setName(newUser.getName());
-                    user.setRole(newUser.getRole());
-                    return repository.save(user);
-                })
-                .orElseGet(() -> {
-                    newUser.setId(id);
-                    return repository.save(newUser);
-                });
+    public void deleteUser(int id){
+        UserRepository.deleteById(id);
     }
 
 
-    public void deleteUser(int id) {
-        repository.deleteById(id);
-    }
+
+
 
 
 }

@@ -1,48 +1,54 @@
 package ouacheter.backend.controllers;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ouacheter.backend.entities.Message;
+import ouacheter.backend.entities.Message;
+import ouacheter.backend.services.MessageService;
 import ouacheter.backend.services.MessageService;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/Message")
 public class MessageController {
-    private final MessageService messageService;
+    private final MessageService MessageService;
 
-    public MessageController(MessageService messageService) {
-        this.messageService = messageService;
+    public MessageController(MessageService MessageService) {
+        this.MessageService = MessageService;
     }
 
 
-    @GetMapping("/messages")
-    List<Message> all() {
-        return messageService.all();
-    }
-    @PostMapping("/messages")
-    Message newMessage(@RequestBody Message newMessage) {
-        return messageService.newMessage(newMessage);
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Message>> getAllMessages () {
+        List<Message> Messages = MessageService.findAllMessages();
+        return new ResponseEntity<>(Messages, HttpStatus.OK);
     }
 
-    // Single item
-
-    @GetMapping("/message/{id}")
-    Message one(@PathVariable int id) {
-
-        return messageService.one(id);
-
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Message> getMessageById (@PathVariable("id") int id) {
+        Message Message = MessageService.findMessageById(id);
+        return new ResponseEntity<>(Message, HttpStatus.OK);
     }
 
-    @PutMapping("/message/{id}")
-    Message replaceMessage(@RequestBody Message newMessage, @PathVariable int id) {
-
-        return messageService.replaceMessage(newMessage,id);
-
+    @PostMapping("/add")
+    public ResponseEntity<Message> addMessage(@RequestBody Message Message) {
+        Message newMessage = MessageService.addMessage(Message);
+        return new ResponseEntity<>(newMessage, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/message/{id}")
-    void deleteMessage(@PathVariable int id) {
-        messageService.deleteMessage(id);
+    @PutMapping("/update")
+    public ResponseEntity<Message> updateMessage(@RequestBody Message Message) {
+        Message updateMessage = MessageService.updateMessage(Message);
+        return new ResponseEntity<>(updateMessage, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteMessage(@PathVariable("id") int id) {
+        MessageService.deleteMessage(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

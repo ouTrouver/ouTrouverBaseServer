@@ -1,15 +1,17 @@
 package ouacheter.backend.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ouacheter.backend.entities.Shop;
+import ouacheter.backend.entities.Shop;
+import ouacheter.backend.services.ShopService;
 import ouacheter.backend.services.ShopService;
 
 import java.util.List;
-
 @RestController
+@RequestMapping("/shop")
 public class ShopController {
-
-
     private final ShopService ShopService;
 
     public ShopController(ShopService ShopService) {
@@ -17,33 +19,34 @@ public class ShopController {
     }
 
 
-    @GetMapping("/Shops")
-    List<Shop> all() {
-        return ShopService.all();
-    }
-    @PostMapping("/Shops")
-    Shop newShop(@RequestBody Shop newShop) {
-        return ShopService.newShop(newShop);
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Shop>> getAllShops () {
+        List<Shop> Shops = ShopService.findAllShops();
+        return new ResponseEntity<>(Shops, HttpStatus.OK);
     }
 
-    // Single item
-
-    @GetMapping("/Shop/{id}")
-    Shop one(@PathVariable int id) {
-
-        return ShopService.one(id);
-
+    @GetMapping("/find/{id}")
+    public ResponseEntity<Shop> getShopById (@PathVariable("id") int id) {
+        Shop Shop = ShopService.findShopById(id);
+        return new ResponseEntity<>(Shop, HttpStatus.OK);
     }
 
-    @PutMapping("/Shop/{id}")
-    Shop replaceShop(@RequestBody Shop newShop, @PathVariable int id) {
-
-        return ShopService.replaceDescription(newShop,id);
-
+    @PostMapping("/add")
+    public ResponseEntity<Shop> addShop(@RequestBody Shop Shop) {
+        Shop newShop = ShopService.addShop(Shop);
+        return new ResponseEntity<>(newShop, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/Shop/{id}")
-    void deleteShop(@PathVariable int id) {
+    @PutMapping("/update")
+    public ResponseEntity<Shop> updateShop(@RequestBody Shop Shop) {
+        Shop updateShop = ShopService.updateShop(Shop);
+        return new ResponseEntity<>(updateShop, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteShop(@PathVariable("id") int id) {
         ShopService.deleteShop(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
