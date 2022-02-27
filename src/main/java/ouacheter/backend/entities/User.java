@@ -14,29 +14,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY )
     private int id;
-    private String name;
     private String role;
+    private String firstname;
+    private String lastname;
     @CreationTimestamp
     private Timestamp registredDate;
     private String password;
     private String email;
 
-    public User(int id, String name, String role, Timestamp registredDate, String password, String email) {
-        this.id = id;
-        this.name = name;
-        this.role = role;
-        this.registredDate = registredDate;
-        this.password = password;
-        this.email = email;
-    }
-
-    public User(String name, String role, Timestamp registredDate, String password, String email) {
-        this.name = name;
-        this.role = role;
-        this.registredDate = registredDate;
-        this.password = password;
-        this.email = email;
-    }
 
     public User() {
     }
@@ -73,13 +58,6 @@ public class User {
         this.role = role;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Timestamp getRegistredDate() {
         return registredDate;
@@ -89,29 +67,46 @@ public class User {
         this.registredDate = registredDate;
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return getId() == user.getId() && Objects.equals(getName(), user.getName()) && Objects.equals(getRole(), user.getRole()) && Objects.equals(getRegistredDate(), user.getRegistredDate());
+        return getId() == user.getId() && Objects.equals(getRole(), user.getRole()) && Objects.equals(getFirstname(), user.getFirstname()) && Objects.equals(getLastname(), user.getLastname()) && Objects.equals(getRegistredDate(), user.getRegistredDate()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getEmail(), user.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getRole(), getRegistredDate());
+        return Objects.hash(getId(), getRole(), getFirstname(), getLastname(), getRegistredDate(), getPassword(), getEmail());
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", role='" + role + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
                 ", registredDate=" + registredDate +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
-
-
 }
