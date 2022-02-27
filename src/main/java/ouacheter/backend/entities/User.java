@@ -2,19 +2,15 @@ package ouacheter.backend.entities;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String role;
     private String firstname;
     private String lastname;
     @CreationTimestamp
@@ -50,14 +46,6 @@ public class User {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
 
     public Timestamp getRegistredDate() {
         return registredDate;
@@ -83,25 +71,23 @@ public class User {
         this.lastname = lastname;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return getId() == user.getId() && Objects.equals(getRole(), user.getRole()) && Objects.equals(getFirstname(), user.getFirstname()) && Objects.equals(getLastname(), user.getLastname()) && Objects.equals(getRegistredDate(), user.getRegistredDate()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getEmail(), user.getEmail());
+        return getId() == user.getId() && Objects.equals(getFirstname(), user.getFirstname()) && Objects.equals(getLastname(), user.getLastname()) && Objects.equals(getRegistredDate(), user.getRegistredDate()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getEmail(), user.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getRole(), getFirstname(), getLastname(), getRegistredDate(), getPassword(), getEmail());
+        return Objects.hash(getId(), getFirstname(), getLastname(), getRegistredDate(), getPassword(), getEmail());
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", role='" + role + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", registredDate=" + registredDate +
@@ -110,3 +96,4 @@ public class User {
                 '}';
     }
 }
+
