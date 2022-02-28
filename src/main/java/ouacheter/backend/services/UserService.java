@@ -39,6 +39,11 @@ public class UserService {
         UserRepository.deleteById(id);
     }
 
+    public Boolean findUserByLog(User tested){
+        User u = UserRepository.findUserByLog(tested.getEmail(),tested.getPassword());
+        if(u == null) return false;
+        else return true;
+    }
 
 
 

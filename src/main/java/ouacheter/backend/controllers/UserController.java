@@ -48,4 +48,10 @@ public class UserController {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/log")
+    public ResponseEntity<Boolean> getUserById (@RequestBody User User) {
+        boolean doesExist = userService.findUserByLog(User);
+        return new ResponseEntity<>(doesExist, HttpStatus.OK);
+    }
 }
