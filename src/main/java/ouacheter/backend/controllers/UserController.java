@@ -49,9 +49,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/log")
+    @PostMapping("/log")
     public ResponseEntity<Boolean> getUserById (@RequestBody User User) {
         boolean doesExist = userService.findUserByLog(User);
+        System.out.println(doesExist);
         return new ResponseEntity<>(doesExist, HttpStatus.OK);
     }
 }

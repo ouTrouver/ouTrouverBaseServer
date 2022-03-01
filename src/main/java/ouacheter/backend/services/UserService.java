@@ -41,8 +41,15 @@ public class UserService {
 
     public Boolean findUserByLog(User tested){
         User u = UserRepository.findUserByLog(tested.getEmail(),tested.getPassword());
-        if(u == null) return false;
-        else return true;
+        if(u == null) {
+          //  System.out.println(u.toString());
+            return false;
+        }
+
+        else {
+            System.out.println(u.toString());
+            return true;
+        }
     }
 
 
