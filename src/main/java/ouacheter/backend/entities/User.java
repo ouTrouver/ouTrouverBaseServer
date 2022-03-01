@@ -17,9 +17,18 @@ public class User {
     private Timestamp registredDate;
     private String password;
     private String email;
-
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
 
     public User() {
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     public String getEmail() {

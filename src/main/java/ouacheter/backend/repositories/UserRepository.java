@@ -12,4 +12,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
             value = "SELECT * FROM starto.user u WHERE u.email = ?1 and u.password = ?2",
             nativeQuery = true)
     User findUserByLog(String email, String password);
+
+    @Query(value = "SELECT * FROM starto.user u WHERE u.email = ?1", nativeQuery = true)
+    public User findByEmail(String email);
+
+    public User findByResetPasswordToken(String token);
 }
