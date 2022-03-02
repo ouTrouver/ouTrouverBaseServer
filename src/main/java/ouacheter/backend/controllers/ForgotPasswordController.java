@@ -3,12 +3,16 @@ package ouacheter.backend.controllers;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ouacheter.backend.entities.User;
 import ouacheter.backend.exceptions.UserNotFoundException;
 import ouacheter.backend.services.UserService;
@@ -19,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 
 @Controller
+@RequestMapping("/auth")
 public class ForgotPasswordController {
     @Autowired
     private JavaMailSender mailSender;
@@ -26,28 +31,24 @@ public class ForgotPasswordController {
     @Autowired
     private UserService UserService;
 
-    @GetMapping("/forgot_password")
-    public String showForgotPasswordForm() {
-        return "forgot_password_form";
-    }
-
     @PostMapping("/forgot_password")
-    public String processForgotPassword(String email) {
+    public ResponseEntity<User> processForgotPassword(@RequestBody User email) {
 
+        System.out.print("email : azeaze" + email);
         String token = RandomString.make(30);
 
         try {
-            UserService.updateResetPasswordToken(token, email);
+            UserService.updateResetPasswordToken(token, email.getEmail());
             String resetPasswordLink = "localhost:4200" + "/reset_password?token=" + token;
-            sendEmail(email, resetPasswordLink);
+            sendEmail(email.getEmail(), resetPasswordLink);
 
         } catch (UserNotFoundException ex) {
             System.out.println("Utilisateur introuvable");
         } catch (UnsupportedEncodingException | MessagingException e) {
             System.out.println("L'email ne s'est pas bien envoyé");
         }
+        return new ResponseEntity<>(email, HttpStatus.OK);
 
-        return "emailsent";
     }
 
     public void sendEmail(String recipientEmail, String link)
@@ -90,23 +91,20 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/reset_password")
-    public String processResetPassword(HttpServletRequest request, Model model) {
-        String token = request.getParameter("token");
-        String password = request.getParameter("password");
+    public String processResetPassword(String token,String password) {
 
         User customer = UserService.getByResetPasswordToken(token);
-        model.addAttribute("title", "Reset your password");
+
 
         if (customer == null) {
-            model.addAttribute("message", "Invalid Token");
-            return "message";
+            return "You couldn't change your password.";
         } else {
             UserService.updatePassword(customer, password);
 
-            model.addAttribute("message", "You have successfully changed your password.");
+            return "You have successfully changed your password.";
         }
 
-        return "message";
+
     }
 }
 class Utility {

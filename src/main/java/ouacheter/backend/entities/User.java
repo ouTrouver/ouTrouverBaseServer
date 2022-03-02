@@ -20,6 +20,10 @@ public class User {
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
+    public User(String email) {
+        this.email = email;
+    }
+
     public User() {
     }
 
