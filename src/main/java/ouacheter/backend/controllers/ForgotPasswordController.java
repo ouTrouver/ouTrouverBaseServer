@@ -2,6 +2,8 @@ package ouacheter.backend.controllers;
 
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +17,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ouacheter.backend.entities.User;
 import ouacheter.backend.exceptions.UserNotFoundException;
+import ouacheter.backend.services.EmailServiceImpl;
 import ouacheter.backend.services.UserService;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
+import java.util.Properties;
 
 @Controller
 @RequestMapping("/auth")
@@ -31,50 +44,37 @@ public class ForgotPasswordController {
     @Autowired
     private UserService UserService;
 
+    @Autowired
+    private EmailServiceImpl emailService;
+
     @PostMapping("/forgot_password")
+    // @EventListener(ApplicationReadyEvent.class)
     public ResponseEntity<User> processForgotPassword(@RequestBody User email) {
 
-        System.out.print("email : azeaze" + email);
+
+
+        String email1 = email.getEmail();
+        System.out.print("email :" + email1);
         String token = RandomString.make(30);
 
         try {
-            UserService.updateResetPasswordToken(token, email.getEmail());
+            UserService.updateResetPasswordToken(token, email1);
             String resetPasswordLink = "localhost:4200" + "/reset_password?token=" + token;
-            sendEmail(email.getEmail(), resetPasswordLink);
+           // emailService.send(email1, "Reinitialization mot de passe",resetPasswordLink );
+            emailService.send(email1, "Reinitialization mot de passe","bro you suck" );
+
 
         } catch (UserNotFoundException ex) {
             System.out.println("Utilisateur introuvable");
-        } catch (UnsupportedEncodingException | MessagingException e) {
-            System.out.println("L'email ne s'est pas bien envoyé");
+            return new ResponseEntity<>(email, HttpStatus.OK);
+
         }
         return new ResponseEntity<>(email, HttpStatus.OK);
 
     }
 
-    public void sendEmail(String recipientEmail, String link)
-            throws MessagingException, UnsupportedEncodingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("OuAcheter.fr", "Shopme Support");
-        helper.setTo(recipientEmail);
 
-        String subject = "Here's the link to reset your password";
-
-        String content = "<p>Hello,</p>"
-                + "<p>You have requested to reset your password.</p>"
-                + "<p>Click the link below to change your password:</p>"
-                + "<p><a href=\"" + link + "\">Change my password</a></p>"
-                + "<br>"
-                + "<p>Ignore this email if you do remember your password, "
-                + "or you have not made the request.</p>";
-
-        helper.setSubject(subject);
-
-        helper.setText(content, true);
-
-        mailSender.send(message);
-    }
 
 
     @GetMapping("/reset_password")
@@ -107,9 +107,5 @@ public class ForgotPasswordController {
 
     }
 }
-class Utility {
-    public static String getSiteURL(HttpServletRequest request) {
-        String siteURL = request.getRequestURL().toString();
-        return siteURL.replace(request.getServletPath(), "");
-    }
-}
+
+
