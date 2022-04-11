@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import ouacheter.backend.entities.User;
 import ouacheter.backend.exceptions.UserNotFoundException;
 import ouacheter.backend.repositories.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserService {
     private UserRepository UserRepository;
     @Autowired
@@ -50,6 +52,29 @@ public class UserService {
             System.out.println(u.toString());
             return true;
         }
+    }
+
+    public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
+        User User = UserRepository.findByEmail(email);
+        if (User != null) {
+            User.setResetPasswordToken(token);
+            UserRepository.save(User);
+        } else {
+            throw new UserNotFoundException("Could not find any User with the email " + email);
+        }
+    }
+
+    public User getByResetPasswordToken(String token) {
+        return UserRepository.findByResetPasswordToken(token);
+    }
+
+    public void updatePassword(User User, String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        User.setPassword(encodedPassword);
+
+        User.setResetPasswordToken(null);
+        UserRepository.save(User);
     }
 
 
