@@ -20,7 +20,14 @@ public class UserService {
         this.UserRepository = UserRepository;
     }
 
+
     public User addUser(User User) {
+        // Verif si le l'adresse Mail est deja disponible ou non
+        User stamp  = UserRepository.findByEmail(User.getEmail());
+        if(stamp != null ){
+            return null;
+        }
+        else
         return UserRepository.save(User);
     }
 
