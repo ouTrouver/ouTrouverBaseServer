@@ -1,9 +1,11 @@
 package ouacheter.backend.controllers;
 
+import net.bytebuddy.utility.RandomString;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ouacheter.backend.entities.User;
+import ouacheter.backend.exceptions.UserNotFoundException;
 import ouacheter.backend.services.UserService;
 
 import java.util.List;
@@ -16,8 +18,13 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    
- 
+
+    @PostMapping("/getByMail")
+    public ResponseEntity<User> getUserByMail(@RequestBody User email) {
+        User tmp = userService.getUserByMail(email);
+        return new ResponseEntity<>(tmp, HttpStatus.OK);
+
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers () {

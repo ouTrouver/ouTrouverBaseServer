@@ -38,7 +38,9 @@ public class UserService {
     public User updateUser(User User) {
         return UserRepository.save(User);
     }
-
+    public User getUserByMail(User User) {
+       return UserRepository.findByEmail(User.getEmail());
+    }
     public User findUserById(int id) {
         return UserRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
