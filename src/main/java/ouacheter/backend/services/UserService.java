@@ -36,6 +36,12 @@ public class UserService {
     }
 
     public User updateUser(User User) {
+        System.out.println("id = "+User.getId());
+       User u = UserRepository.findById(User.getId()).get();
+        System.out.println("id = "+u.getPassword());
+       User.setPassword(u.getPassword());
+        User.setRegistredDate(u.getRegistredDate());
+
         return UserRepository.save(User);
     }
     public User getUserByMail(User User) {

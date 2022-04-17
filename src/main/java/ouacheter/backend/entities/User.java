@@ -19,12 +19,47 @@ public class User {
     private String email;
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
-
+    private String phoneNumber;
+    private String adress;
+    private String website;
+    private String instagram;
     public User(String email) {
         this.email = email;
     }
 
     public User() {
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumer(String phoneNumer) {
+        this.phoneNumber = phoneNumer;
+    }
+
+    public String getAdress() {
+        return adress;
+    }
+
+    public void setAdress(String adress) {
+        this.adress = adress;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public void setInstagram(String instagram) {
+        this.instagram = instagram;
     }
 
     public String getResetPasswordToken() {
@@ -85,19 +120,6 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getId() == user.getId() && Objects.equals(getFirstname(), user.getFirstname()) && Objects.equals(getLastname(), user.getLastname()) && Objects.equals(getRegistredDate(), user.getRegistredDate()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getEmail(), user.getEmail());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getFirstname(), getLastname(), getRegistredDate(), getPassword(), getEmail());
-    }
-
-    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
@@ -106,7 +128,25 @@ public class User {
                 ", registredDate=" + registredDate +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
+                ", resetPasswordToken='" + resetPasswordToken + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", adress='" + adress + '\'' +
+                ", website='" + website + '\'' +
+                ", instagram='" + instagram + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getId() == user.getId() && Objects.equals(getFirstname(), user.getFirstname()) && Objects.equals(getLastname(), user.getLastname()) && Objects.equals(getRegistredDate(), user.getRegistredDate()) && Objects.equals(getPassword(), user.getPassword()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getResetPasswordToken(), user.getResetPasswordToken()) && Objects.equals(getPhoneNumber(), user.getPhoneNumber()) && Objects.equals(getAdress(), user.getAdress()) && Objects.equals(getWebsite(), user.getWebsite()) && Objects.equals(getInstagram(), user.getInstagram());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getFirstname(), getLastname(), getRegistredDate(), getPassword(), getEmail(), getResetPasswordToken(), getPhoneNumber(), getAdress(), getWebsite(), getInstagram());
     }
 }
 
