@@ -17,4 +17,7 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     User findByEmail(String email);
 
     public User findByResetPasswordToken(String token);
+
+    @Query(value = "UPDATE starto.user u WHERE u.id = ?1 SET ", nativeQuery = true)
+    User updateUser(int id);
 }
