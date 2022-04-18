@@ -10,7 +10,7 @@ import ouacheter.backend.services.ShopService;
 
 import java.util.List;
 @RestController
-@RequestMapping("/shop")
+@RequestMapping("/Shop")
 public class ShopController {
     private final ShopService ShopService;
 

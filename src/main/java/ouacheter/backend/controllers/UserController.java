@@ -57,9 +57,9 @@ public class UserController {
     }
 
     @PostMapping("/log")
-    public ResponseEntity<Boolean> getUserById (@RequestBody User User) {
-        boolean doesExist = userService.findUserByLog(User);
+    public ResponseEntity<User> getUserById (@RequestBody User User) {
+        User doesExist = userService.findUserByLog(User);
         System.out.println(doesExist);
-        return new ResponseEntity<>(doesExist, HttpStatus.OK);
+        return new ResponseEntity<User>(doesExist, HttpStatus.OK);
     }
 }

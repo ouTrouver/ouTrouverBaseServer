@@ -1,20 +1,27 @@
 package ouacheter.backend.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class Shop {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @OneToMany
     private List<Asset> assetsList;
     @OneToOne
     private User owner;
+    private String shop_name;
     private String description;
+
+    public String getShop_name() {
+        return shop_name;
+    }
+
+    public void setShop_name(String shop_name) {
+        this.shop_name = shop_name;
+    }
 
     public String getDescription() {
         return description;

@@ -56,16 +56,16 @@ public class UserService {
         UserRepository.deleteById(id);
     }
 
-    public Boolean findUserByLog(User tested){
+    public User findUserByLog(User tested){
         User u = UserRepository.findUserByLog(tested.getEmail(),tested.getPassword());
         if(u == null) {
           //  System.out.println(u.toString());
-            return false;
+            return null;
         }
 
         else {
             System.out.println(u.toString());
-            return true;
+            return u;
         }
     }
 
