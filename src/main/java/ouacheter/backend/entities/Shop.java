@@ -13,10 +13,28 @@ public class Shop {
     @OneToOne
     private User owner;
     private String shop_name;
+    private String latitude;
+    private String longitude;
     private String description;
 
     public String getShop_name() {
         return shop_name;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public void setShop_name(String shop_name) {

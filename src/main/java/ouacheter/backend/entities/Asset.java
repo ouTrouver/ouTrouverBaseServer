@@ -8,7 +8,7 @@ import javax.persistence.OneToOne;
 public class Asset {
     @Id
     private int id;
-    private String coordonates;
+
     private String name;
     @OneToOne
     private User owner;
@@ -26,13 +26,6 @@ public class Asset {
         this.id = id;
     }
 
-    public String getCoordonates() {
-        return coordonates;
-    }
-
-    public void setCoordonates(String coordonates) {
-        this.coordonates = coordonates;
-    }
 
     public String getName() {
         return name;
