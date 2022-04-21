@@ -32,6 +32,7 @@ For customers :
 
 ## 🚀 About Me
 I'm a full stack developer that just came out of college and I'm trying to do my best to help people.
+My main goal is to be sure that people can connect and to make everything more convinient for them.
 
 
 
