@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ouacheter.backend.entities.Shop;
 import ouacheter.backend.entities.Shop;
+import ouacheter.backend.entities.User;
 import ouacheter.backend.services.ShopService;
 import ouacheter.backend.services.ShopService;
 
@@ -24,6 +25,12 @@ public class ShopController {
     public ResponseEntity<List<Shop>> getAllShops () {
         List<Shop> Shops = ShopService.findAllShops();
         return new ResponseEntity<>(Shops, HttpStatus.OK);
+    }
+
+    @GetMapping("/ownedShops/{id}")
+    public ResponseEntity<List<Shop>> getShopsByUser (@PathVariable("id") int user) {
+        List<Shop> Shop = ShopService.getShopsByUser(user);
+        return new ResponseEntity<>(Shop, HttpStatus.OK);
     }
 
     @GetMapping("/find/{id}")

@@ -23,6 +23,9 @@ public class ShopService {
         return ShopRepository.save(Shop);
     }
 
+    public List<Shop> getShopsByUser(int i) {
+        return ShopRepository.getShopsByUser(i);
+    }
     public List<Shop> findAllShops() {
         return ShopRepository.findAll();
     }
